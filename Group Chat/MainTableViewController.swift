@@ -8,6 +8,25 @@
 import Foundation
 import UIKit
 
+
+class GroupCell: UITableViewCell {
+    
+    @IBOutlet weak var groupCellLabel: UILabel!
+    
+    
+    @IBAction func addMembersButton(_ sender: Any) {
+        
+        
+        
+    }
+    
+}
+
+
+
+
+
+
 class MainTableViewController: UITableViewController{
     
     let mainSideMenuSegueIdentifier = "MainSideMenuSegueIdentifier"
@@ -16,6 +35,7 @@ class MainTableViewController: UITableViewController{
     var fb = FirebaseManager.shared
     var fbAuth = FirebaseManager.auth
     let messagesSegueIdentifier = "MessagesSegueIdentifier"
+    let membersSegueIdentifier = "MembersSegueIdentifier"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,21 +47,14 @@ class MainTableViewController: UITableViewController{
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if (fb.currentUser == nil) {
-                print("There is no user")
-                self.navigationController?.popViewController(animated: true)
-            }else{
-                print("Signed in")
-            }
-        
-        fb.startListening(self)
+        fb.groupStartListening(self)
         
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fb.groupsListener.remove()
-        fbAuth.removeStateDidChangeListener(fb.authStateListenerHandle)
+        fbAuth.removeStateDidChangeListener(fb.authStateListenerHandle!)
     }
     
     
@@ -69,7 +82,9 @@ class MainTableViewController: UITableViewController{
             let nameTextField = alertController.textFields![0] as UITextField
             let membersTextField = alertController.textFields![1] as UITextField
             
-            self.fb.groupsRef.addDocument(data: ["quote": nameTextField.text!,"name":membersTextField.text!, "created": self.fb.timeStamp, "author": self.fb.currentUser!.uid])
+            let memberEmails = membersTextField.text?.components(separatedBy: ",")
+            
+            self.fb.groupsRef.addDocument(data: ["name": nameTextField.text!,"memberEmails": memberEmails!, "created": self.fb.timeStamp(), "owner": self.fb.currentUser!.uid])
             
         }
         
@@ -105,12 +120,12 @@ class MainTableViewController: UITableViewController{
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == groupCellIdentifier{
-//            if let indexPath = tableView.indexPathForSelectedRow{
-//                                (segue.destination as! MovieQuoteDetailViewController).movieQuote = movieQuotes[indexPath.row]
-//                (segue.destination as! MessagesTableViewController).groupRef = fb.groupsRef.document(groups[indexPath.row].id!)
-//            }
-//        }
+        if segue.identifier == groupCellIdentifier{
+            if let indexPath = tableView.indexPathForSelectedRow{
+//                (segue.destination as! MembersTableViewController).groupRef = groups[indexPath.row]
+                (segue.destination as! MembersTableViewController).id = groups[indexPath.row].id!
+            }
+        }
     }
 
     

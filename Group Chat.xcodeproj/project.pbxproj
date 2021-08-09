@@ -91,6 +91,8 @@
 		DC438D9826BF107300309498 /* Group Chat */ = {
 			isa = PBXGroup;
 			children = (
+				DC438DD426C1784300309498 /* Managers */,
+				DC438DD326C1781300309498 /* Controllers */,
 				DC438DB726BF450100309498 /* GoogleService-Info.plist */,
 				DC438D9926BF107300309498 /* AppDelegate.swift */,
 				DC438D9B26BF107300309498 /* SceneDelegate.swift */,
@@ -98,22 +100,36 @@
 				DC438DA226BF107300309498 /* Assets.xcassets */,
 				DC438DA426BF107300309498 /* LaunchScreen.storyboard */,
 				DC438DA726BF107300309498 /* Info.plist */,
+				DC438DCB26C06FC000309498 /* Group.swift */,
+				DC438DCD26C0706E00309498 /* Message.swift */,
+			);
+			path = "Group Chat";
+			sourceTree = "<group>";
+		};
+		DC438DD326C1781300309498 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
 				DC438DAD26BF11B200309498 /* LoginVC.swift */,
-				DC438DAF26BF121200309498 /* FirebaseManager.swift */,
 				DC438DB126BF250C00309498 /* PressedLoginVC.swift */,
 				DC438DB326BF258900309498 /* PressedSignUpVC.swift */,
 				DC438DBB26BF74CB00309498 /* MainTableViewController.swift */,
 				DC438DBD26BF75FC00309498 /* MembersTableViewController.swift */,
-				DC438DBF26BF760E00309498 /* MessagesTableViewController.swift */,
 				DC438DC126BF874200309498 /* MessagesSideNavController.swift */,
 				DC438DC526BF8AD300309498 /* MembersSideNavController.swift */,
 				DC438DC726BF8B2200309498 /* MainSideNavController.swift */,
 				DC438DC926C068AC00309498 /* ProfileVC.swift */,
-				DC438DCB26C06FC000309498 /* Group.swift */,
-				DC438DCD26C0706E00309498 /* Message.swift */,
+				DC438DBF26BF760E00309498 /* MessagesTableViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		DC438DD426C1784300309498 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				DC438DAF26BF121200309498 /* FirebaseManager.swift */,
 				DC438DCF26C0B6BF00309498 /* UserManager.swift */,
 			);
-			path = "Group Chat";
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		E126E5D4B015BCD9EC736117 /* Pods */ = {

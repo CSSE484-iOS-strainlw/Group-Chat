@@ -13,6 +13,8 @@ class PressedLoginVC: UIViewController {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     
+    var fb = FirebaseManager.shared
+    var fbAuth = FirebaseManager.auth
     
     var loginViewController: LoginVC{
         let navController = presentingViewController as! UINavigationController
@@ -26,6 +28,10 @@ class PressedLoginVC: UIViewController {
     }
     
     @IBAction func pressedLogin(_ sender: Any) {
+        
+        self.fbAuth.signIn(withEmail: emailTextField.text!, password: passwordTextField.text!, completion: nil)
+        
+        
         dismiss(animated: true, completion: nil)
         loginViewController.performSegue(withIdentifier: groupTableViewSegueIdentifier, sender: loginViewController)
     }

@@ -10,5 +10,20 @@ import UIKit
 
 class MainSideNavController: UIViewController {
     
+    let fb = FirebaseManager.shared
+    let fbAuth = FirebaseManager.auth
     
+    @IBAction func pressedLogOut(_ sender: Any) {
+        
+        if fbAuth.currentUser != nil {
+        do{
+            try fbAuth.signOut()
+        } catch{
+            print("Sign out Error")
+        }
+        
+    }
+    
+    
+}
 }

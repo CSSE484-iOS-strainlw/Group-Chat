@@ -11,8 +11,9 @@ import UIKit
 class LoginVC: UIViewController{
     
     let fb = FirebaseManager.shared
-    let um = 
-    let mainPageSegueIdentifier = "MainPageSegueIdentifier"
+    let fbAuth = FirebaseManager.auth
+    let um = UserManager.shared
+    let groupTableViewSegueIdentifier = "GroupTableViewSegueIdentifier"
     let pressedLoginIdentifier = "PressedLoginIdentifier"
     let pressedSignUpIdentifier = "PressedSignUpIdentifier"
     
@@ -28,19 +29,20 @@ class LoginVC: UIViewController{
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
         if fb.currentUser != nil {
-            print("Already Signed in")
-            self.performSegue(withIdentifier: self.mainPageSegueIdentifier, sender: self)
+            print("Already Signed in, Lognin Page")
+            self.performSegue(withIdentifier: self.groupTableViewSegueIdentifier, sender: self)
         }
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == mainPageSegueIdentifier{
-            print("Checking for user \(fb.currentUser!.uid)")
-            UserManager.shared.addNewUserMaybe(uid: Auth.auth().currentUser!.uid, name: Auth.auth().currentUser!.displayName, photoUrl: Auth.auth().currentUser!.photoURL?.absoluteString ?? "")
-        }
+    override func viewWillAppear(_ animated: Bool) {
+        fb.loginStartListening(self)
     }
     
+    override func viewDidLoad() {
+        
+    }
     
     
 }

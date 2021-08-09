@@ -14,6 +14,8 @@ class FirebaseManager {
     static let shared = FirebaseManager()
     static let store = Firestore.firestore()
     var groupsRef: CollectionReference!
+    var groupRef: DocumentReference!
+    var groupListener: ListenerRegistration!
     var groupsListener: ListenerRegistration!
     var authStateListenerHandle: AuthStateDidChangeListenerHandle?
     var currentUser = Auth.auth().currentUser
@@ -29,19 +31,33 @@ class FirebaseManager {
         
     }
     
-    func startListening(_ viewController: MainTableViewController){
-        if(groupsListener != nil){
-            groupsListener.remove()
-        }
+    func loginStartListening(_ viewController: LoginVC){
         
-        authStateListenerHandle = Auth.auth().addStateDidChangeListener{ (auth,user) in
-            if (Auth.auth().currentUser == nil){
+        self.authStateListenerHandle = FirebaseManager.auth.addStateDidChangeListener{ (auth,user) in
+            if self.currentUser?.uid == nil {
                 print("There is no user")
                 viewController.navigationController?.popViewController(animated: true)
             }else{
+                print(self.currentUser?.uid)
                 print("Signed in")
             }
-            
+
+        }
+    }
+    
+    func groupStartListening(_ viewController: MainTableViewController){
+        if(groupsListener != nil){
+            groupsListener.remove()
+        }
+        self.authStateListenerHandle = FirebaseManager.auth.addStateDidChangeListener{ (auth,user) in
+            if self.currentUser?.uid == nil {
+                print("There is no user")
+                viewController.navigationController?.popViewController(animated: true)
+            }else{
+                print(self.currentUser?.uid)
+                print("Signed in")
+            }
+
         }
         
         let query = groupsRef.order(by: "created", descending: true).limit(to: 50)
@@ -51,13 +67,15 @@ class FirebaseManager {
                 viewController.groups.removeAll()
                 querySnapshot.documents.forEach { (documentSnapshot) in
 
+                    
                     let id = documentSnapshot.documentID
                     let data = documentSnapshot.data()
+                    let author = data["author"] as! String
                     let name = data["name"] as! String
                     let memberEmails = data["memberEmails"] as! [String]
-                    let ownerEmail = data["ownerEmail"] as! String
                     
-                    viewController.groups.append(Group(id, memberEmails, ownerEmail, name))
+                    
+                    viewController.groups.append(Group(id, memberEmails, author, name))
                 }
                 viewController.tableView.reloadData()
             }else {

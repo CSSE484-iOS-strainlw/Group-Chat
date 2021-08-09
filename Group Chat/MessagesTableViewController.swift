@@ -8,6 +8,17 @@
 import Foundation
 import UIKit
 
+class fromMeMessageCell: UITableViewCell {
+    
+    
+    
+}
+
+class notFromMeMessageCell: UITableViewCell {
+    
+}
+
+
 class MessagesTableViewController: UITableViewController {
     
     
